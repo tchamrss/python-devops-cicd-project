@@ -19,16 +19,16 @@ jobs:
         python-version: '3.12'
 
     - name: Display python version
-      run: 
+      run: |
         python --version
         which python
 
     - name: install dependencies
-      run: 
+      run: |
         python --version
         python -m pip install --upgrade pip
         pip install ".[dev]"
     - name: Linting and format checks
-      run:
+      run: |
         black --check .
         ruff check .
