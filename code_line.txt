@@ -1,0 +1,43 @@
+python3.12 -m venv .venv --without-pip
+source .venv/bin/activate
+python3 --version
+python3.12 --version  # Falls vorhanden
+deactivate
+rm -rf .venv
+pip install -e .
+pip install ".[dev]"
+black --check .
+python -m ensurepip --upgrade
+python3.12 -m venv .venv --upgrade-deps
+brew uninstall python@3.12
+brew install python@3.12
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install black
+brew install pyenv
+pyenv install 3.12.5
+pyenv local 3.12.5
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install black
+
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
+echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
+
+echo 'eval "$(pyenv init --path)"' >> ~/.zprofile
+echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+exec zsh
+
+brew install openssl@3 readline sqlite3 xz zlib
+
+
+env \
+  PYTHON_CONFIGURE_OPTS="--enable-optimizations" \
+  LDFLAGS="-L$(brew --prefix openssl@3)/lib" \
+  CPPFLAGS="-I$(brew --prefix openssl@3)/include" \
+  pyenv install 3.12.9
+
+pyenv global 3.12.9
+pyenv rehash
