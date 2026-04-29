@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-test:
+  lint-static-security-checks:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,3 +36,39 @@ jobs:
       run: |   
         mypy src/
         bandit -c pyproject.toml -r .
+
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.9','3.10','3.11','3.12']
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '${{ matrix.python-version }}'
+
+    - name: Display python version
+      run: |
+        python --version
+        which python
+
+    - name: install dependencies
+      run: |
+        python --version
+        python -m pip install --upgrade pip
+        pip install ".[dev]"
+    - name: Automated test execution with pytest
+      run: |
+        pytest tests/
+  release:
+    needs: [lint-static-security-checks, tests]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: Release
+      run: echo "Creating release for commit"

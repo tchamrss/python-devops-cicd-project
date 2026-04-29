@@ -18,7 +18,7 @@ def check_urls(urls: Collection[str], timeout: int = 5) -> dict[str, str]:
     for url in urls:
         status = "Unknown"
         try:
-            response = requests.get(url, timeout=5)
+            response = requests.get(url, timeout=timeout)
             status = (
                 f"{response.status_code} OK"
                 if response.status_code == 200
