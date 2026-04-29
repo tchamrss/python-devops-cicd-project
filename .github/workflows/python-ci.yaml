@@ -65,10 +65,28 @@ jobs:
     - name: Automated test execution with pytest
       run: |
         pytest tests/
-  release:
+  build-and-upload-release:
     needs: [lint-static-security-checks, tests]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-    - name: Release
-      run: echo "Creating release for commit"
+    - name: check out repo
+      uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: install dependencies
+      run: |
+        python --version
+        python -m pip install --upgrade pip
+        pip install build
+
+    - name: build the python project
+      run: |
+        python -m build
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: simple-http-checker-build-${{ github.sha}}
+        path: dist/

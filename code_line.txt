@@ -41,3 +41,5 @@ env \
 
 pyenv global 3.12.9
 pyenv rehash
+
+black .
