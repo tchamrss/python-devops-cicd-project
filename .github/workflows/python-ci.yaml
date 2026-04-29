@@ -81,12 +81,11 @@ jobs:
         python --version
         python -m pip install --upgrade pip
         pip install build
-
     - name: build the python project
       run: |
         python -m build
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: simple-http-checker-build-${{ github.sha}}
         path: dist/
